@@ -11,7 +11,7 @@ async def get_festivals():
         async with session.get(url) as response:
 
             if response.status != 200:
-                print("test")
+                print("festivals fetch error")
                 return []
 
             return await response.json()

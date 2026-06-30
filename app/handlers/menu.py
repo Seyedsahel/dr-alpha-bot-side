@@ -6,7 +6,7 @@ from app.handlers.aftercares import handle_aftercares
 from app.handlers.reminders import handle_reminders
 from app.handlers.festivals import festivals_handler
 from app.handlers.faq import handle_faq
-from app.handlers.services import handle_services
+from app.handlers.services import services_handler
 
 
 async def handle_menu(message: Message):
@@ -33,7 +33,7 @@ async def handle_menu(message: Message):
         await handle_faq(message)
 
     elif message.text == "ℹ️ معرفی خدمات کلینیک":
-        await handle_services(message)
+        await services_handler(message)
 
     else:
         return False

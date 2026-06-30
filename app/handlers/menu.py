@@ -4,7 +4,7 @@ from app.handlers.appointments import handle_appointments
 from app.handlers.consultations import handle_consultations
 from app.handlers.aftercares import handle_aftercares
 from app.handlers.reminders import handle_reminders
-from app.handlers.festivals import handle_festivals
+from app.handlers.festivals import festivals_handler
 from app.handlers.faq import handle_faq
 from app.handlers.services import handle_services
 
@@ -27,7 +27,7 @@ async def handle_menu(message: Message):
         await handle_reminders(message)
 
     elif message.text == "🎉 جشنواره‌ها":
-        await handle_festivals(message)
+        await festivals_handler(message)
 
     elif message.text == "❓ سوالات متداول":
         await handle_faq(message)

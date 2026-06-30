@@ -1,3 +1,4 @@
 .env
 venv
 bot side dr alpha
+__pycache__

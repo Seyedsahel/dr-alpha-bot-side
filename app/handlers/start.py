@@ -15,7 +15,7 @@ async def on_message(message: Message):
     if message.content == "/start":
         await bot.send_message(
             message.chat.id,
-            "به ربات کلینیک دکتر کامرانی خوش آمدید 🌸\n\n"
+            "به ربات مطب دکتر کامرانی خوش آمدید 🌸\n\n"
             "لطفاً یکی از گزینه‌های زیر را انتخاب کنید:",
             components=main_menu_keyboard()
 

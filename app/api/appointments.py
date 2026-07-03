@@ -20,3 +20,15 @@ async def create_appointment_api(user_id, slot_id, service_id):
                 return None
 
             return await response.json()
+        
+async def get_user_appointments(user_id: int):
+
+    url = f"{Config.BACKEND_URL}/appointments/{user_id}"
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+
+            if response.status != 200:
+                return []
+
+            return await response.json()

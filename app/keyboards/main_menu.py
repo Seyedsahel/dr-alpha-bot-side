@@ -37,4 +37,9 @@ def main_menu_keyboard():
         row=4
     )
 
+    keyboard.add(
+        MenuKeyboardButton("ℹ️ اطلاعات من"),
+        row=4
+    )
+
     return keyboard

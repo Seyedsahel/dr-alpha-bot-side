@@ -21,3 +21,15 @@ async def create_consultation_api(user_id: int, service: str = None, note: str =
                 return None
 
             return await response.json()
+        
+async def get_user_consultations(user_id: int):
+
+    url = f"{Config.BACKEND_URL}/consultations/{user_id}"
+
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+
+            if response.status != 200:
+                return []
+
+            return await response.json()

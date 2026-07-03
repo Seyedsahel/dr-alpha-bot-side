@@ -40,3 +40,24 @@ async def create_appointment_api(user_id: int, slot_id: int, service_id: int, de
                 return None
 
             return await response.json()
+        
+
+async def update_user_contact(chat_id: str, first_name: str, last_name: str = "", phone: str = None):
+
+    url = f"{Config.BACKEND_URL}/users"
+
+    payload = {
+        "chat_id": str(chat_id),
+        "first_name": first_name,
+        "last_name": last_name,
+        "phone": phone
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, json=payload) as response:
+
+            if response.status not in (200, 201):
+                print("update user contact error:", response.status)
+                return None
+
+            return await response.json()

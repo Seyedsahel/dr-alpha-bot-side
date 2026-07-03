@@ -1,7 +1,7 @@
 from bale import Message
 
 from app.handlers.appointments import handle_appointment_entry
-from app.handlers.consultations import handle_consultations
+from app.handlers.consultations import handle_consultations, handle_consultation_text
 from app.handlers.aftercares import handle_aftercares
 from app.handlers.reminders import handle_reminders
 from app.handlers.festivals import festivals_handler
@@ -13,6 +13,9 @@ async def handle_menu(message: Message):
 
     if not message.text:
         return False
+
+    if await handle_consultation_text(message):
+        return True
 
     if message.text == "📅 ثبت نوبت":
         await handle_appointment_entry(message)

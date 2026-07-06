@@ -8,8 +8,12 @@ async def handle_reminder_callback(callback: CallbackQuery):
 
     if not callback.data.startswith("reminder_service:"):
         return False
-
-    service_id = int(callback.data.split(":")[1])
+    
+    try:
+        service_id = int(callback.data.split(":")[1])
+    except (ValueError, IndexError):
+        await callback.message.reply("⚠️ درخواست نا معتبر است")
+        return
 
     services = await get_services()
 
@@ -18,7 +22,11 @@ async def handle_reminder_callback(callback: CallbackQuery):
         None
     )
 
-    service_name = service["name"] if service else ""
+    if not service:
+        await callback.message.reply("⚠️ خدمت مورد نظر یافت نشد")
+        return
+
+    service_name = service["name"]
 
     await start_reminder_date_step(
         callback.message,

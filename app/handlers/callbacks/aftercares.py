@@ -7,8 +7,12 @@ async def handle_aftercare_callback(callback: CallbackQuery):
 
     if not callback.data.startswith("aftercare:"):
         return False
-
-    service_id = int(callback.data.split(":")[1])
+    
+    try:
+        service_id = int(callback.data.split(":")[1])
+    except (ValueError, IndexError):
+        await callback.message.reply("⚠️ درخواست نا معتبر است")
+        return
 
     aftercare = await get_aftercare(service_id)
 

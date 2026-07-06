@@ -10,7 +10,13 @@ async def handle_appointment_callback(callback: CallbackQuery):
 
     if callback.data.startswith("appointment:"):
 
-        service_id = int(callback.data.split(":")[1])
+        try:
+
+         service_id = int(callback.data.split(":")[1])
+        except (ValueError , IndexError):
+            await callback.message.reply("⚠️ درخواست نا معتبر است")
+            return
+        
         slots = await get_slots()
 
         if not slots:
@@ -38,9 +44,15 @@ async def handle_appointment_callback(callback: CallbackQuery):
         return True
 
     elif callback.data.startswith("appointment_slot:"):
+
         parts = callback.data.split(":")
-        service_id = int(parts[1])
-        slot_id = int(parts[2])
+
+        try:
+            service_id = int(parts[1])
+            slot_id = int(parts[2])
+        except (ValueError, IndexError):
+            await callback.message.reply("⚠️ درخواست نا معتبر است")
+            return
 
         from app.api.client import get_or_create_user
         user = await get_or_create_user(

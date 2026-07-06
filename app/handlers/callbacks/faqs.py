@@ -17,7 +17,11 @@ async def handle_faq_callback(callback: CallbackQuery):
     if not callback.data.startswith("faq:"):
         return False
 
-    faq_id = int(callback.data.split(":")[1])
+    try:
+        faq_id = int(callback.data.split(":")[1])
+    except (ValueError, IndexError):
+        await callback.message.reply("⚠️ درخواست نا معتبر است")
+        return
 
     faqs = await get_faqs()
 

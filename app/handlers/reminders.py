@@ -48,7 +48,7 @@ async def start_reminder_date_step(callback_message, service_id: int, service_na
 
     await callback_message.reply(
         "لطفاً تاریخ انجام خدمت را به تاریخ شمسی و با فرمت "
-        "۱۴۰۳/۰۵/۱۲ وارد کنید:"
+        "روز/ماه/سال یعنی ۱۲/۰۵/۱۴۰۳ وارد کنید:"
     )
 
 
@@ -76,14 +76,14 @@ async def handle_reminder_text(message: Message):
     if len(parts) != 3:
 
         await message.reply(
-            "فرمت تاریخ نامعتبر است. لطفاً به شکل ۱۴۰۳/۰۵/۱۲ وارد کنید:"
+            "فرمت تاریخ نامعتبر است. لطفاً به شکل ۱۲/۰۵/۱۴۰۳ (روز/ماه/سال) وارد کنید:"
         )
 
         return True
 
     try:
 
-        year, month, day = (int(part) for part in parts)
+        day, month, year = (int(part) for part in parts)
 
         gregorian_date = jdatetime.date(
             year,

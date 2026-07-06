@@ -7,6 +7,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 async def check_and_send_reminders():
+    print("Checking for due reminders...")  # Debugging line
 
     reminders = await get_due_reminders()
 

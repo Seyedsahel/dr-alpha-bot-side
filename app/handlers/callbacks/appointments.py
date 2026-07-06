@@ -50,14 +50,14 @@ async def handle_appointment_callback(callback: CallbackQuery):
         )
 
         from app.api.appointments import create_appointment_api
-        result = await create_appointment_api(
+        result, error = await create_appointment_api(
             user_id=user["id"],
             slot_id=slot_id,
             service_id=service_id
         )
 
-        if not result:
-            await callback.message.reply("خطا در ثبت نوبت")
+        if error:
+            await callback.message.reply(f"⚠️ {error}")
             return
 
         await callback.message.reply(

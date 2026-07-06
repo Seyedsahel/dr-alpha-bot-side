@@ -1,6 +1,9 @@
 import aiohttp
 
 from app.config import Config
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 async def get_festivals():
@@ -11,7 +14,7 @@ async def get_festivals():
         async with session.get(url) as response:
 
             if response.status != 200:
-                print("festivals fetch error")
+                logger.error("festivals fetch error")
                 return []
 
             return await response.json()

@@ -1,6 +1,8 @@
 import aiohttp
-
+import logging
 from app.config import Config
+
+logger = logging.getLogger(__name__)
 
 
 async def get_aftercares():
@@ -11,7 +13,7 @@ async def get_aftercares():
         async with session.get(url) as response:
 
             if response.status != 200:
-                print("aftercares fetch error")
+                logger.error("aftercares fetch error")
                 return []
 
             return await response.json()
@@ -25,7 +27,7 @@ async def get_aftercare(service_id: int):
         async with session.get(url) as response:
 
             if response.status != 200:
-                print("aftercare fetch error")
+                logger.error("aftercare fetch error")
                 return None
 
             return await response.json()

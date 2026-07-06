@@ -1,6 +1,9 @@
 import aiohttp
 
 from app.config import Config
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 async def create_consultation_api(user_id: int, service: str = None, note: str = None):
@@ -17,7 +20,7 @@ async def create_consultation_api(user_id: int, service: str = None, note: str =
         async with session.post(url, json=payload) as response:
 
             if response.status != 201:
-                print("consultation api error:", response.status)
+                logger.error("consultation api error:", response.status)
                 return None
 
             return await response.json()

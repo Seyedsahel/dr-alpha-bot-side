@@ -6,12 +6,14 @@ from app.bot import bot
 from app.keyboards.main_menu import main_menu_keyboard
 from app.handlers.menu import handle_menu
 from app.scheduler.reminder_worker import start_reminder_worker
+import logging
 
+logger = logging.getLogger(__name__)
 
 @bot.event
 async def on_ready():
 
-    print(f"{bot.user.username} is Ready!")
+    logger.info(f"{bot.user.username} is Ready!")
 
     asyncio.create_task(
         start_reminder_worker()

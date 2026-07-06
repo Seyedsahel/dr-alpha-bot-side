@@ -1,5 +1,8 @@
 import aiohttp
 from app.config import Config
+import logging
+
+logger = logging.getLogger(__name__)
 
 async def get_or_create_user(chat_id: str, first_name: str, last_name: str = ""):
     
@@ -15,7 +18,7 @@ async def get_or_create_user(chat_id: str, first_name: str, last_name: str = "")
         async with session.post(url, json=payload) as response:
 
             if response.status not in (200, 201):
-                print("user api error:", response.status)
+                logger.error("user api error:", response.status)
                 return None
 
             return await response.json()
@@ -36,7 +39,7 @@ async def create_appointment_api(user_id: int, slot_id: int, service_id: int, de
         async with session.post(url, json=payload) as response:
 
             if response.status != 201:
-                print("appointment api error:", response.status)
+                logger.error("appointment api error:", response.status)
                 return None
 
             return await response.json()
@@ -57,7 +60,7 @@ async def update_user_contact(chat_id: str, first_name: str, last_name: str = ""
         async with session.post(url, json=payload) as response:
 
             if response.status not in (200, 201):
-                print("update user contact error:", response.status)
+                logger.error("update user contact error:", response.status)
                 return None
 
             return await response.json()

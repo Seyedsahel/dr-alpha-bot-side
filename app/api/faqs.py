@@ -1,6 +1,9 @@
 import aiohttp
 
 from app.config import Config
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 async def get_faqs():
@@ -11,7 +14,7 @@ async def get_faqs():
         async with session.get(url) as response:
 
             if response.status != 200:
-                print("faqs fetch error")
+                logger.error("faqs fetch error")
                 return []
 
             return await response.json()

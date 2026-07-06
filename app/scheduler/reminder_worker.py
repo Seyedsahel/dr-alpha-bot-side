@@ -2,7 +2,9 @@ import asyncio
 
 from app.bot import bot
 from app.api.reminders import get_due_reminders, mark_reminder_sent
+import logging
 
+logger = logging.getLogger(__name__)
 
 async def check_and_send_reminders():
 
@@ -28,7 +30,7 @@ async def check_and_send_reminders():
 
         except Exception as error:
 
-            print(f"[Reminder Send Error] {error}")
+            logger.error(f"[Reminder Send Error] {error}")
 
 
 async def start_reminder_worker():
@@ -39,6 +41,6 @@ async def start_reminder_worker():
             await check_and_send_reminders()
 
         except Exception as error:
-            print(f"[Reminder Worker Error] {error}")
+            logger.error(f"[Reminder Worker Error] {error}")
 
         await asyncio.sleep(60)

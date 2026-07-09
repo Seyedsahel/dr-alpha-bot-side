@@ -21,12 +21,10 @@ async def festivals_handler(message: Message):
             f"🎉 {festival['title']}\n\n"
             f"{festival['description']}"
         )
-        # if festival["image_url"]:
-        #     await message.reply_photo(
-        #         InputFile(festival["image_url"]),
-        #         caption=caption
-        #     )
-        # else:
-        #     await message.reply(caption)
-        # after deployment, the image_url is going to work, so we will only send the caption for now
-        await message.reply(caption)
+        if festival["image_url"]:
+            await message.reply_photo(
+                InputFile(festival["image_url"]),
+                caption=caption
+            )
+        else:
+            await message.reply(caption)

@@ -23,3 +23,17 @@ def to_jalali_date(value):
 
     except Exception:
         return "-"
+    
+    
+def format_price(service):
+
+    minimum_price = service.get("minimum_price")
+    maximum_price = service.get("maximum_price")
+
+    if not minimum_price:
+        return "تماس بگیرید"
+
+    if maximum_price and maximum_price > minimum_price:
+        return f"{minimum_price:,} تا {maximum_price:,} تومان"
+
+    return f"{minimum_price:,} تومان"

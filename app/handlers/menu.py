@@ -1,6 +1,6 @@
 from bale import Message
 
-from app.handlers.appointments import handle_appointment_entry
+from app.handlers.appointments import handle_appointment_entry, handle_appointment_text
 from app.handlers.consultations import handle_consultations, handle_consultation_text
 from app.handlers.aftercares import handle_aftercares
 from app.handlers.reminders import handle_reminders, handle_reminder_text
@@ -11,6 +11,7 @@ from app.handlers.my_info import handle_my_info
 
 from app.states.consultation import clear_state as clear_consultation_state
 from app.states.reminder import clear_state as clear_reminder_state
+from app.states.appointment import clear_state as clear_appointment_state
 
 
 MENU_COMMANDS = {
@@ -38,10 +39,14 @@ async def handle_menu(message: Message):
         if await handle_reminder_text(message):
             return True
 
+        if await handle_appointment_text(message):
+            return True
+
     else:
 
         clear_consultation_state(message.chat.id)
         clear_reminder_state(message.chat.id)
+        clear_appointment_state(message.chat.id)
 
     if message.text == "📅 ثبت نوبت":
         await handle_appointment_entry(message)

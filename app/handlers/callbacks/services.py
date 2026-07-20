@@ -5,6 +5,8 @@ from bale import (
     )
 
 from app.api.services import get_services
+from app.utils.formatter import format_price
+
 
 async def handle_service_callback(callback: CallbackQuery):
 
@@ -39,11 +41,7 @@ async def handle_service_callback(callback: CallbackQuery):
         )
     )
 
-    price = (
-        f"{service['price']:,} تومان"
-        if service["price"]
-        else "تماس بگیرید"
-    )
+    price = format_price(service)
 
     text = (
         f"💉 {service['name']}\n\n"

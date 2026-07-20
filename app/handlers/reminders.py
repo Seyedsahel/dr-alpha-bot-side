@@ -39,7 +39,7 @@ async def start_reminder_date_step(callback_message, service_id: int, service_na
 
     set_state(
         callback_message.chat.id,
-        step="date",
+        step="day",
         data={
             "service_id": service_id,
             "service_name": service_name
@@ -47,8 +47,14 @@ async def start_reminder_date_step(callback_message, service_id: int, service_na
     )
 
     await callback_message.reply(
-        "لطفاً تاریخ انجام خدمت را به تاریخ شمسی و با فرمت "
-        "روز/ماه/سال یعنی ۱۲/۰۵/۱۴۰۳ وارد کنید:"
+        "لطفاً روز انجام خدمت را به تاریخ شمسی وارد کنید (مثلاً 12):"
+    )
+
+
+def to_english_digits(text):
+
+    return text.strip().translate(
+        str.maketrans("۰۱۲۳۴۵۶۷۸۹", "0123456789")
     )
 
 
@@ -61,29 +67,42 @@ async def handle_reminder_text(message: Message):
         return False
 
     state = get_state(message.chat.id)
+    step = state.get("step")
 
-    if state.get("step") != "date":
+    if step not in ("day", "month", "year"):
         return False
 
-    raw_date = message.text.strip().replace("-", "/")
+    raw_value = to_english_digits(message.text)
 
-    raw_date = raw_date.translate(
-        str.maketrans("۰۱۲۳۴۵۶۷۸۹", "0123456789")
-    )
+    try:
+        value = int(raw_value)
+    except ValueError:
+        await message.reply("مقدار وارد شده معتبر نیست. لطفاً فقط عدد وارد کنید:")
+        return True
 
-    parts = raw_date.split("/")
+    if step == "day":
 
-    if len(parts) != 3:
+        set_state(message.chat.id, step="month", data={"day": value})
 
-        await message.reply(
-            "فرمت تاریخ نامعتبر است. لطفاً به شکل ۱۲/۰۵/۱۴۰۳ (روز/ماه/سال) وارد کنید:"
-        )
+        await message.reply("لطفاً ماه انجام خدمت را وارد کنید (مثلاً 05):")
 
         return True
 
-    try:
+    if step == "month":
 
-        day, month, year = (int(part) for part in parts)
+        set_state(message.chat.id, step="year", data={"month": value})
+
+        await message.reply("لطفاً سال انجام خدمت را وارد کنید (مثلاً 1403):")
+
+        return True
+
+    # step == "year"
+
+    day = state.get("day")
+    month = state.get("month")
+    year = value
+
+    try:
 
         gregorian_date = jdatetime.date(
             year,
@@ -94,8 +113,10 @@ async def handle_reminder_text(message: Message):
     except ValueError:
 
         await message.reply(
-            "تاریخ وارد شده معتبر نیست. لطفاً دوباره وارد کنید:"
+            "تاریخ وارد شده معتبر نیست. لطفاً دوباره از «روز» شروع کنید:"
         )
+
+        set_state(message.chat.id, step="day")
 
         return True
 
